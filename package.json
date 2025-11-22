@@ -1,0 +1,22 @@
+{
+  "name": "mani272-lookup",
+  "version": "1.0.0",
+  "description": "Mani 272 Lookup Tool - Phone number lookup application",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "lookup",
+    "phone",
+    "search"
+  ],
+  "author": "Mani 272",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
+

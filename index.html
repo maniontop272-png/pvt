@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Mani 272 Lookup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#0a0e1a; --card:#1a1f35; --text:#f1f5f9; --muted:#94a3b8; --accent:#6366f1; --accent-700:#4f46e5; --danger:#f43f5e; --success:#10b981; --border:#2d3548; --panel:#151a2e;
+    }
+    :root.light {
+      --bg:#ffffff; --card:#f8fafc; --text:#1e293b; --muted:#64748b; --accent:#6366f1; --accent-700:#4f46e5; --danger:#ef4444; --success:#10b981; --border:#e2e8f0; --panel:#ffffff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 25%, #312e81 50%, #1e3a8a 75%, #0f172a 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+      color: var(--text);
+      position: relative;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    :root.light body {
+      background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 25%, #c7d2fe 50%, #a5b4fc 75%, #818cf8 100%);
+      background-size: 400% 400%;
+      animation: gradientShift 20s ease infinite;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .appbar, .layout, .login-modal {
+      position: relative;
+      z-index: 1;
+    }
+    .appbar { display:flex; align-items:center; justify-content:space-between; padding: 16px 24px; border-bottom: 1px solid rgba(255,255,255,.1); background: rgba(26, 31, 53, 0.8); backdrop-filter: blur(20px) saturate(180%); position: sticky; top:0; z-index: 20; box-shadow: 0 4px 30px rgba(0,0,0,.2); }
+    :root.light .appbar { background: rgba(248, 250, 252, 0.95); border-bottom: 1px solid rgba(0,0,0,.1); box-shadow: 0 2px 20px rgba(0,0,0,.08); }
+    .brand { display:flex; align-items:center; gap:12px; font-weight:700; }
+    .brand .lights { display:flex; gap:7px; }
+    .dot { width:14px; height:14px; border-radius:999px; box-shadow: 0 0 10px currentColor; transition: all .3s ease; }
+    .dot:hover { transform: scale(1.1); }
+    .dot.red { background:#ef4444; color:#ef4444; } 
+    .dot.yellow { background:#f59e0b; color:#f59e0b; } 
+    .dot.green { background:#22c55e; color:#22c55e; animation: pulse 2s ease infinite; }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .brand .title { font-size: 1.2rem; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    :root.light .brand .title { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .top-actions { display:flex; align-items:center; gap:10px; }
+    .pill { display:inline-block; padding:8px 16px; border-radius:999px; border:1px solid rgba(255,255,255,.1); background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%); color: var(--text); font-weight:600; font-size:0.95rem; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.15); backdrop-filter: blur(10px); transition: all .3s ease; }
+    .pill:hover { box-shadow: 0 6px 20px rgba(99, 102, 241, 0.25); transform: translateY(-1px); }
+    :root.light .pill { background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%); border:1px solid rgba(0,0,0,.1); }
+    .btn { border:none; border-radius:12px; padding:12px 20px; cursor:pointer; color:#fff; background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); transition:all .3s ease; box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); font-weight:600; letter-spacing: 0.3px; }
+    .btn:hover { box-shadow: 0 6px 25px rgba(99, 102, 241, 0.45); transform: translateY(-2px); }
+    .btn:active { transform: translateY(0) scale(0.98); }
+    .btn.secondary { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3); color: white; }
+    .btn.secondary:hover { box-shadow: 0 6px 25px rgba(139, 92, 246, 0.45); }
+    .btn.run { background: linear-gradient(135deg, #f59e0b 0%, #ea580c 100%); color:#111827; font-weight:700; box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4); }
+    .btn.run:hover { box-shadow: 0 6px 25px rgba(245, 158, 11, 0.5); }
+    .btn.clr { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); color: white; box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3); }
+    .btn.clr:hover { box-shadow: 0 6px 25px rgba(236, 72, 153, 0.4); }
+    .layout { display:grid; grid-template-columns: 1fr 340px; gap:16px; max-width:1400px; margin: 16px auto; padding: 0 16px; }
+    .layout .left, .layout .right { overflow-y: auto; }
+    .layout .left { max-height: calc(100vh - 140px); }
+    .layout .right { max-height: calc(100vh - 140px); }
+    .panel { background: rgba(26, 31, 53, 0.6); border:1px solid rgba(255,255,255,.1); border-radius:20px; box-shadow: 0 8px 32px rgba(0,0,0,.3); backdrop-filter: blur(20px) saturate(180%); }
+    :root.light .panel { background: rgba(248, 250, 252, 0.9); border:1px solid rgba(0,0,0,.1); box-shadow: 0 8px 32px rgba(0,0,0,.1); backdrop-filter: blur(20px) saturate(180%); }
+    .left { padding:16px; }
+    .right { padding:16px; }
+    .searchbar { display:grid; grid-template-columns: 1fr auto auto; gap:12px; align-items:center; }
+    .input { padding:14px 18px; border-radius:12px; border:1px solid rgba(255,255,255,.1); background: rgba(21, 26, 46, 0.6); color: var(--text); outline:none; box-shadow: inset 0 2px 8px rgba(0,0,0,.2); transition: all .3s ease; backdrop-filter: blur(10px); }
+    .input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.2), inset 0 2px 8px rgba(99,102,241,.1); background: rgba(21, 26, 46, 0.8); }
+    .input::placeholder { color: rgba(148, 163, 184, 0.6); }
+    :root.light .input { background: rgba(255,255,255,0.8); border:1px solid rgba(0,0,0,.1); box-shadow: inset 0 1px 3px rgba(0,0,0,.05); }
+    :root.light .input:focus { box-shadow: 0 0 0 3px rgba(99,102,241,.15), inset 0 1px 3px rgba(0,0,0,.05); background: #ffffff; }
+    .tabs { display:flex; gap:12px; margin-top:16px; }
+    .tab { flex:1; padding:14px 16px; border-radius:12px; border:1px solid rgba(255,255,255,.08); background: rgba(21, 26, 46, 0.4); color: var(--text); text-align:center; cursor:pointer; position:relative; transition: all .3s ease; font-weight:500; backdrop-filter: blur(10px); }
+    .tab:hover { background: rgba(21, 26, 46, 0.6); border-color: rgba(99,102,241,.3); }
+    .tab.active { background: linear-gradient(135deg, rgba(99,102,241,0.2) 0%, rgba(139,92,246,0.2) 100%); border-color: var(--accent); box-shadow: inset 0 -3px 0 0 var(--accent), 0 4px 15px rgba(99,102,241,.2); color: #a5b4fc; font-weight:600; }
+    :root.light .tab { background: rgba(248,250,252,0.6); border:1px solid rgba(0,0,0,.1); color: var(--text); }
+    :root.light .tab.active { background: linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(139,92,246,0.15) 100%); color: var(--accent); }
+    .results { margin-top: 12px; }
+    .code { background: rgba(15, 22, 41, 0.8); border:1px solid rgba(99,102,241,.2); color:#a5b4fc; border-radius:14px; padding:20px; overflow:auto; font-family: 'Fira Code', ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; box-shadow: inset 0 2px 12px rgba(0,0,0,.3), 0 4px 20px rgba(99,102,241,.1); line-height: 1.6; backdrop-filter: blur(10px); }
+    :root.light .code { background: rgba(248,250,252,0.9); border:1px solid rgba(99,102,241,.2); color: #4f46e5; box-shadow: inset 0 1px 4px rgba(0,0,0,.05), 0 2px 10px rgba(99,102,241,.08); }
+    .big-number { font-family: ui-monospace, Menlo, Consolas, monospace; color:#34d399; font-size:1.2rem; font-weight:700; margin-bottom:8px; }
+    .timestamp { color:#60a5fa; font-size:.9rem; text-align:right; margin-top:8px; }
+    .history { display:grid; gap:10px; }
+    .hist-item { border:1px solid var(--border); background:var(--panel); border-radius:10px; padding:12px; cursor:pointer; transition: background .2s ease, border-color .2s ease; }
+    .hist-item:hover { background:var(--card); border-color:var(--accent); }
+    :root.light .hist-item { background: #ffffff; }
+    :root.light .hist-item:hover { background: #f1f5f9; }
+    .hist-term { color:#34d399; font-weight:700; }
+    .hist-time { color:#60a5fa; font-size:.9rem; }
+    .label { color: var(--muted); font-size: .9rem; margin-bottom:6px; }
+    .profile { display:flex; gap:12px; align-items:center; }
+    .avatar { width:48px; height:48px; border-radius:999px; background: radial-gradient(circle, #22c55e 0%, #16a34a 60%, #0ea5e9 100%); border:2px solid var(--border); background-size: cover; background-position: center; }
+    .owner { font-size:.85rem; color: var(--muted); margin-top:8px; }
+    .actions-col { display:flex; gap:8px; margin-top:10px; }
+    .hidden { display:none; }
+    .modal { position: fixed; inset:0; background: rgba(0,0,0,.6); display:flex; align-items:center; justify-content:center; }
+    .modal .content { width: 520px; max-width: 95vw; }
+    .field { display:grid; gap:8px; margin-top:10px; }
+    .grid2 { display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .login-modal { position: fixed; inset:0; background: rgba(10,14,26,.92); backdrop-filter: blur(8px); display:flex; align-items:center; justify-content:center; z-index:1000; padding: 16px; }
+    :root.light .login-modal { background: rgba(248,250,252,.95); }
+    .login-card { background: rgba(26, 31, 53, 0.85); border:1px solid rgba(255,255,255,.15); border-radius:24px; padding:40px; width:100%; max-width:440px; box-shadow: 0 25px 80px rgba(0,0,0,.4), 0 0 0 1px rgba(99,102,241,.2); backdrop-filter: blur(20px) saturate(180%); }
+    :root.light .login-card { background: rgba(255,255,255,0.95); border:1px solid rgba(0,0,0,.1); box-shadow: 0 25px 80px rgba(0,0,0,.15), 0 0 0 1px rgba(99,102,241,.1); }
+    .login-card h2 { margin:0 0 8px; font-size:1.5rem; text-align:center; }
+    .login-card p { margin:0 0 24px; color: var(--muted); text-align:center; }
+    .login-field { margin-bottom:18px; }
+    .login-field label { display:block; margin-bottom:8px; color: var(--muted); font-size:.9rem; font-weight:500; }
+    .login-field input { width:100%; padding:15px 18px; border-radius:12px; border:1px solid rgba(255,255,255,.1); background: rgba(15, 22, 41, 0.6); color: var(--text); outline:none; box-shadow: inset 0 2px 8px rgba(0,0,0,.2); font-size:16px; transition: all .3s ease; backdrop-filter: blur(10px); }
+    .login-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,0.2), inset 0 2px 8px rgba(99,102,241,.1); background: rgba(15, 22, 41, 0.8); }
+    .login-field input::placeholder { color: rgba(148, 163, 184, 0.5); }
+    :root.light .login-field input { background: rgba(248,250,252,0.8); border:1px solid rgba(0,0,0,.1); box-shadow: inset 0 1px 3px rgba(0,0,0,.05); }
+    :root.light .login-field input:focus { background: #ffffff; box-shadow: 0 0 0 3px rgba(99,102,241,0.15), inset 0 1px 3px rgba(0,0,0,.05); }
+    .login-error { color: var(--danger); font-size:.9rem; margin-top:8px; margin-bottom:8px; display:none; text-align:center; }
+    .login-error.show { display:block; }
+    .login-btn { width:100%; padding:15px; border-radius:12px; border:none; background: linear-gradient(135deg, var(--accent) 0%, var(--accent-700) 100%); color:white; font-weight:600; cursor:pointer; margin-top:8px; font-size:1rem; transition: all .3s ease; box-shadow: 0 4px 20px rgba(99,102,241,.3); letter-spacing: 0.3px; }
+    .login-btn:hover { box-shadow: 0 6px 30px rgba(99,102,241,.4); transform: translateY(-2px); }
+    .login-btn:disabled { opacity:0.6; cursor:not-allowed; }
+    .login-btn:active { transform: scale(0.98); }
+    .btn-icon { border:none; border-radius:10px; padding:10px 12px; cursor:pointer; background: var(--panel); color: var(--text); display:flex; align-items:center; justify-content:center; transition:background .2s ease, transform .06s ease; border:1px solid var(--border); }
+    .btn-icon:hover { background: var(--card); }
+    .btn-icon:active { transform: scale(0.95); }
+    .btn-icon svg { width:18px; height:18px; }
+    .btn-icon.logout { background:#334155; }
+    .btn-icon.logout:hover { background:#475569; }
+    .admin-panel { margin-top: 16px; padding: 12px 0; border-top: 1px solid rgba(255,255,255,.1); display: flex; flex-direction: column; gap: 10px; }
+    .admin-header { padding: 0 0 12px 0; margin-bottom: 0; border-bottom: 2px solid var(--accent); }
+    .admin-header h3 { margin: 0; font-size: 1rem; color: var(--accent); font-weight: 700; letter-spacing: 0.5px; }
+    .user-form { display: grid; gap: 8px; margin-bottom: 0; background: rgba(99,102,241,0.05); padding: 10px; border-radius: 8px; border: 1px solid rgba(99,102,241,0.2); }
+    .user-form .input { width: 100%; max-width: 100%; box-sizing: border-box; }
+    .credit-input { width: 70px !important; }
+    .user-form select { width: 100%; }
+    :root.light .user-form { background: rgba(99,102,241,0.03); border: 1px solid rgba(99,102,241,0.1); }
+    .user-list { display: flex; flex-direction: column; gap: 8px; }
+    .user-item { display: flex; flex-direction: column; gap: 8px; padding: 10px; background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.2); border-radius: 8px; transition: all .2s ease; }
+    .user-item:hover { background: rgba(99,102,241,0.12); border-color: var(--accent); }
+    :root.light .user-item { background: rgba(99,102,241,0.05); }
+    :root.light .user-item:hover { background: rgba(99,102,241,0.1); }
+    .user-info { display: flex; flex-direction: column; gap: 4px; }
+    .user-name { font-weight: 600; color: var(--text); font-size: 0.9rem; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .user-role { font-size: 0.8rem; color: var(--muted); }
+    .user-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    .btn-small { padding: 5px 10px; font-size: 0.8rem; border-radius: 6px; border: none; cursor: pointer; color: white; transition: all 0.2s ease; font-weight: 600; min-height: 32px; }
+    .btn-danger { background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%); box-shadow: 0 2px 8px rgba(244,63,94,.2); }
+    .btn-danger:hover { box-shadow: 0 4px 12px rgba(244,63,94,.3); transform: translateY(-1px); }
+    .btn-warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); color: #111827; font-weight: 600; box-shadow: 0 2px 8px rgba(245,158,11,.2); }
+    .btn-warning:hover { box-shadow: 0 4px 12px rgba(245,158,11,.3); transform: translateY(-1px); }
+    .credit-badge { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 5px 10px; border-radius: 14px; font-size: 0.8rem; font-weight: 600; margin-left: 8px; box-shadow: 0 3px 10px rgba(16,185,129,.3); transition: all .3s ease; }
+    .credit-badge:hover { box-shadow: 0 4px 15px rgba(16,185,129,.4); transform: translateY(-1px); }
+    .credit-input { width: 60px; padding: 5px 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--panel); color: var(--text); font-size: 0.85rem; }
+    .role-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.3px; }
+    .role-badge.admin { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; }
+    .role-badge.user { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); color: white; }
+    .status { margin-top: 10px; font-size: 0.95rem; color: var(--muted); padding: 6px 0; }
+    .status.error { color: var(--danger); font-weight: 600; }
+    .status.success { color: var(--success); font-weight: 600; }
+    
+    /* Customer Support Section */
+    .support-panel { margin-top: 16px; padding: 10px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(99, 102, 241, 0.12); border-radius: 10px; }
+    :root.light .support-panel { background: rgba(255, 255, 255, 0.4); border: 1px solid rgba(99, 102, 241, 0.08); }
+    .support-header { font-weight: 700; color: var(--text); font-size: 0.9rem; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(99, 102, 241, 0.15); }
+    .support-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 0.8rem; gap: 6px; }
+    .support-label { color: var(--muted); flex-shrink: 0; }
+    .support-link { color: var(--accent); text-decoration: none; font-weight: 600; transition: all 0.2s ease; word-break: break-all; }
+    .support-link:hover { text-decoration: underline; }
+    .support-buttons { display: flex; gap: 6px; margin-top: 8px; }
+    .btn-support { flex: 1; min-width: 0; padding: 8px 10px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: 600; font-size: 0.8rem; transition: all 0.2s ease; border: none; cursor: pointer; white-space: nowrap; }
+    .btn-support.whatsapp { background: linear-gradient(135deg, #25d366 0%, #1fa857 100%); color: white; }
+    .btn-support.whatsapp:hover { box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3); transform: translateY(-1px); }
+    .btn-support.call { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); color: white; }
+    .btn-support.call:hover { box-shadow: 0 3px 10px rgba(107, 114, 128, 0.3); transform: translateY(-1px); }
+    
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      body { font-size: 14px; }
+      .appbar { padding: 12px 14px; flex-wrap: wrap; gap: 8px; }
+      .brand .title { font-size: 0.95rem; }
+      .brand .lights { gap: 4px; }
+      .dot { width: 10px; height: 10px; }
+      .top-actions { gap: 6px; flex-wrap: wrap; width: 100%; }
+      .pill { padding: 6px 10px; font-size: 0.75rem; white-space: nowrap; }
+      .btn { padding: 9px 14px; font-size: 0.9rem; min-height: 36px; }
+      .btn.secondary { padding: 9px 12px; }
+      .layout { grid-template-columns: 1fr; gap: 12px; padding: 0 12px; margin: 12px auto; }
+      .layout .left, .layout .right { max-height: none; overflow-y: visible; }
+      .panel { padding: 12px; border-radius: 16px; }
+      .left, .right { padding: 12px; overflow-y: visible; }
+      .searchbar { grid-template-columns: 1fr auto auto; gap: 8px; }
+      .searchbar .btn { width: auto; min-width: 50px; }
+      .input { padding: 10px 12px; font-size: 14px; }
+      .tabs { gap: 6px; margin-top: 8px; }
+      .tab { padding: 9px 10px; font-size: 0.85rem; }
+      .code { padding: 12px; font-size: 0.8rem; max-height: 250px; }
+      .big-number { font-size: 1rem; }
+      .profile { flex-direction: row; text-align: left; gap: 10px; }
+      .avatar { width: 48px; height: 48px; }
+      .actions-col { flex-direction: column; gap: 6px; }
+      .actions-col .btn { width: 100%; padding: 8px 12px; font-size: 0.85rem; }
+      .support-panel { margin-top: 10px; padding: 8px; }
+      .support-header { font-size: 0.85rem; margin-bottom: 6px; }
+      .support-item { font-size: 0.75rem; padding: 3px 0; }
+      .btn-support { padding: 7px 8px; font-size: 0.75rem; }
+      .admin-panel { margin-top: 12px; padding: 10px 0; }
+      .user-list { gap: 6px; }
+      .grid2 { grid-template-columns: 1fr; }
+      .login-card { padding: 24px 18px; max-width: 95vw; }
+      .login-card h2 { font-size: 1.35rem; }
+      .login-card p { font-size: 0.9rem; margin-bottom: 20px; }
+      .login-field { margin-bottom: 14px; }
+      .login-field label { font-size: 0.85rem; }
+      .login-field input { padding: 12px 12px; font-size: 16px; }
+      .login-btn { padding: 12px; font-size: 1rem; min-height: 44px; }
+      .login-error { font-size: 0.85rem; }
+      .btn-icon { padding: 8px 10px; }
+      .btn-icon svg { width: 16px; height: 16px; }
+      .hist-item { padding: 8px; }
+      .timestamp { font-size: 0.8rem; text-align: left; }
+      .owner { font-size: 0.8rem; margin-top: 6px; }
+    }
+    
+    @media (max-width: 480px) {
+      .appbar { padding: 10px 10px; gap: 6px; }
+      .brand .title { font-size: 0.8rem; }
+      .brand .lights { gap: 3px; }
+      .dot { width: 8px; height: 8px; }
+      .pill { padding: 4px 8px; font-size: 0.7rem; }
+      .btn { padding: 8px 10px; font-size: 0.8rem; min-height: 32px; }
+      .layout { padding: 0 8px; gap: 8px; }
+      .layout .left, .layout .right { max-height: none; overflow-y: visible; }
+      .panel { padding: 10px; border-radius: 12px; }
+      .left, .right { padding: 10px; overflow-y: visible; }
+      .searchbar { grid-template-columns: 1fr auto auto; gap: 6px; }
+      .searchbar .btn { padding: 8px 10px; font-size: 0.8rem; }
+      .input { padding: 10px 10px; font-size: 13px; }
+      .tab { padding: 8px 9px; font-size: 0.8rem; }
+      .code { padding: 10px; font-size: 0.75rem; max-height: 200px; }
+      .big-number { font-size: 0.9rem; }
+      .profile { gap: 8px; }
+      .avatar { width: 40px; height: 40px; }
+      .actions-col { gap: 4px; }
+      .actions-col .btn { padding: 7px 10px; font-size: 0.75rem; min-height: 32px; }
+      .support-panel { margin-top: 8px; padding: 6px; }
+      .support-header { font-size: 0.8rem; margin-bottom: 4px; }
+      .support-item { font-size: 0.7rem; padding: 2px 0; gap: 4px; }
+      .support-label { font-size: 0.7rem; }
+      .support-link { font-size: 0.7rem; }
+      .btn-support { padding: 5px 6px; font-size: 0.7rem; }
+      .admin-panel { margin-top: 10px; padding: 8px 0; gap: 8px; }
+      .admin-header h3 { font-size: 0.9rem; padding-bottom: 8px; }
+      .user-form { padding: 8px; gap: 6px; margin-bottom: 0; }
+      .user-list { gap: 6px; }
+      .user-item { padding: 6px 8px; }
+      .user-name { font-size: 0.8rem; }
+      .user-role { font-size: 0.7rem; }
+      .btn-small { padding: 4px 8px; font-size: 0.7rem; min-height: 28px; }
+      .role-badge { font-size: 0.6rem; padding: 2px 6px; }
+      .login-card { padding: 18px 14px; }
+      .login-card h2 { font-size: 1.2rem; margin-bottom: 4px; }
+      .login-card p { font-size: 0.8rem; margin-bottom: 14px; }
+      .login-field { margin-bottom: 12px; }
+      .login-field label { font-size: 0.8rem; }
+      .login-field input { padding: 10px; font-size: 16px; }
+      .login-btn { padding: 10px; font-size: 0.95rem; min-height: 40px; }
+      .top-actions { gap: 4px; }
+      .btn-icon { padding: 6px 8px; }
+      .btn-icon svg { width: 14px; height: 14px; }
+    }
+    
+    /* Touch-friendly improvements */
+    @media (hover: none) and (pointer: coarse) {
+      .btn, .btn-icon, .tab, .hist-item { min-height: 44px; }
+      .input { min-height: 44px; }
+      .login-btn { min-height: 48px; }
+    }
+    
+    /* Prevent text selection on buttons for better mobile UX */
+    .btn, .btn-icon, .tab { user-select: none; -webkit-user-select: none; -moz-user-select: none; }
+    
+    /* Smooth scrolling */
+    html { scroll-behavior: smooth; }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+  <canvas id="particles-canvas"></canvas>
+  <!-- Login Modal -->
+  <div id="loginModal" class="login-modal animate__animated animate__fadeIn">
+    <div class="login-card">
+      <h2>Login Required</h2>
+      <p>Please enter your credentials to access Mani 272 Lookup</p>
+      <form id="loginForm">
+        <div class="login-field">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" placeholder="Enter your username" required autocomplete="username" />
+        </div>
+        <div class="login-field">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter your password" required autocomplete="current-password" />
+        </div>
+        <div id="loginError" class="login-error">Invalid username or password</div>
+        <button type="submit" class="login-btn">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="appbar animate__animated animate__fadeIn" style="display:none;" id="mainApp">
+    <div class="brand">
+      <div class="lights"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+      <div class="title">Mani 272 Lookup</div>
+    </div>
+    <div class="top-actions">
+      <span class="pill" id="creditsPill" style="background:#f59e0b;color:#111827;font-weight:700;">Credits: 0</span>
+      <span class="pill" id="userRolePill">User</span>
+      <button id="theme" class="btn secondary">Dark</button>
+      <button id="logoutBtn" class="btn-icon logout" title="Logout">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="layout" style="display:none;" id="mainLayout">
+    <div class="panel left animate__animated animate__fadeInUp">
+      <div class="searchbar">
+        <input id="term" class="input" placeholder="Enter 10-digit number e.g. 9876543210" />
+        <button id="search" class="btn run" style="min-width:92px">RUN</button>
+        <button id="clear" class="btn clr">CLR</button>
+      </div>
+      <div class="tabs">
+        <div id="tabResponse" class="tab active">Response</div>
+        <div id="tabHistory" class="tab">History</div>
+      </div>
+      <div id="status" class="status"></div>
+      <div id="owner" class="owner"></div>
+      <div id="panelResponse" class="results">
+        <div id="queryEcho" class="big-number"></div>
+        <div id="resultCount" class="label"></div>
+        <div id="code" class="code"></div>
+        <div id="timestamp" class="timestamp"></div>
+        <div id="devCredit" class="timestamp">Developed By ！Ｍａｎｉ２７２</div>
+      </div>
+      <div id="panelHistory" class="results hidden">
+        <div id="historyList" class="history"></div>
+      </div>
+    </div>
+    <div class="panel right animate__animated animate__fadeInUp">
+      <div class="profile">
+        <div class="avatar"></div>
+        <div>
+          <div id="profileName" style="font-weight:600">Mani 272</div>
+          <div id="profileEmail" class="owner">mani272@example.com</div>
+        </div>
+      </div>
+      <div class="actions-col">
+        <button id="copyResponse" class="btn" style="flex:1">Copy Response</button>
+        <button id="clearOutput" class="btn secondary" style="flex:1">Clear Output</button>
+      </div>
+      <div class="owner">Built by Mani 272</div>
+      
+      <!-- Customer Support Section -->
+      <div class="support-panel">
+        <div class="support-header">Customer Support</div>
+        <div class="support-item">
+          <div class="support-label">Contact</div>
+          <a href="tel:+919297987586" class="support-link">+919297987586</a>
+        </div>
+        <div class="support-item">
+          <div class="support-label">Email</div>
+          <a href="mailto:mani272@gmail.com" class="support-link">mani272@gmail.com</a>
+        </div>
+        <div class="support-item">
+          <div class="support-label">YouTube</div>
+          <a href="https://www.youtube.com/@mani272" target="_blank" class="support-link">Open</a>
+        </div>
+        <div class="support-item">
+          <div class="support-label">Discount Link</div>
+          <a href="#" class="support-link">Claim</a>
+        </div>
+        <div class="support-buttons">
+          <a href="https://wa.me/919297987586" target="_blank" class="btn-support whatsapp">WhatsApp</a>
+          <a href="tel:+919297987586" class="btn-support call">Call Now</a>
+        </div>
+      </div>
+      
+      <!-- Admin Panel -->
+      <div id="adminPanel" class="admin-panel hidden">
+        <div class="admin-header">
+          <h3>User Management</h3>
+        </div>
+        <div class="user-form">
+          <div class="field">
+            <label class="label">Username</label>
+            <input type="text" id="newUsername" class="input" placeholder="Enter username" style="padding:10px 12px;" />
+          </div>
+          <div class="field">
+            <label class="label">Password</label>
+            <input type="password" id="newPassword" class="input" placeholder="Enter password" style="padding:10px 12px;" />
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label class="label">Role</label>
+              <select id="newRole" class="input" style="padding:10px 12px;">
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div class="field">
+              <label class="label">Credits</label>
+              <input type="number" id="newCredits" class="input credit-input" placeholder="100" value="100" min="0" style="padding:8px 10px;" />
+            </div>
+          </div>
+          <button id="addUserBtn" class="btn">Add User</button>
+        </div>
+        <div class="label">All Users</div>
+        <div id="userList" class="user-list"></div>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+          <button id="resetDataBtn" class="btn btn-danger" style="width:100%;">Reset Database</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+  <script>
+    const API_BASE = 'https://subhxmouktik-number-api.onrender.com/api';
+    const KEY = 'HUNTER';
+    const DEFAULT_LOGO = 'https://files.catbox.moe/u3079a.png';
+    
+    // Elements
+    const el = {
+      term: document.getElementById('term'),
+      search: document.getElementById('search'),
+      clear: document.getElementById('clear'),
+      status: document.getElementById('status'),
+      owner: document.getElementById('owner'),
+      code: document.getElementById('code'),
+      queryEcho: document.getElementById('queryEcho'),
+      resultCount: document.getElementById('resultCount'),
+      tabResponse: document.getElementById('tabResponse'),
+      tabHistory: document.getElementById('tabHistory'),
+      panelResponse: document.getElementById('panelResponse'),
+      panelHistory: document.getElementById('panelHistory'),
+      historyList: document.getElementById('historyList'),
+      theme: document.getElementById('theme'),
+      profileName: document.getElementById('profileName'),
+      profileEmail: document.getElementById('profileEmail'),
+      copyResponse: document.getElementById('copyResponse'),
+      clearOutput: document.getElementById('clearOutput'),
+      timestamp: document.getElementById('timestamp'),
+      avatar: document.querySelector('.avatar'),
+      logoutBtn: document.getElementById('logoutBtn'),
+      userRolePill: document.getElementById('userRolePill'),
+      adminPanel: document.getElementById('adminPanel'),
+      newUsername: document.getElementById('newUsername'),
+      newPassword: document.getElementById('newPassword'),
+      newRole: document.getElementById('newRole'),
+      newCredits: document.getElementById('newCredits'),
+      addUserBtn: document.getElementById('addUserBtn'),
+      userList: document.getElementById('userList'),
+      creditsPill: document.getElementById('creditsPill')
+    };
+    
+    // Animations
+    const anim = {
+      pulseRun() { gsap.to(el.search, { scale:1.03, duration:0.6, yoyo:true, repeat:1, ease:'power1.inOut' }); },
+      flashStatus() { gsap.from(el.status, { opacity:0, y:6, duration:0.25 }); },
+      flipTabs() { gsap.from([el.tabResponse, el.tabHistory], { opacity:0, y:8, duration:0.25, stagger:0.05 }); }
+    };
+    
+    // Storage utilities
+    const store = {
+      save(k,v){ localStorage.setItem(k, JSON.stringify(v)); },
+      load(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
+    };
+    
+    // User Management System
+    let currentUser = null;
+    
+    // Initialize default admin user
+    function initializeUsers() {
+      let users = store.load('users', null);
+      
+      // Force reset if users structure is invalid
+      const isValidStructure = users && typeof users === 'object' && 
+        (users['admin'] || users['user1']);
+      
+      if (!users || Object.keys(users).length === 0 || !isValidStructure) {
+        console.log('Creating fresh user database...');
+        users = {
+          'admin': {
+            username: 'admin',
+            password: 'admin123',
+            role: 'admin',
+            email: 'admin@mani272.com',
+            credits: 999999
+          },
+          'user1': {
+            username: 'user1',
+            password: 'user123',
+            role: 'user',
+            email: 'user1@mani272.com',
+            credits: 100
+          }
+        };
+        store.save('users', users);
+        console.log('Default users initialized:', users);
+        console.log('Users object keys:', Object.keys(users));
+      } else {
+        console.log('Existing users loaded:', users);
+      }
+      return users;
+    }
+    
+    function getUsers() {
+      return store.load('users', {});
+    }
+    
+    function setUsers(users) {
+      store.save('users', users);
+    }
+    
+    function authenticateUser(username, password) {
+      const users = getUsers();
+      console.log('Attempting login for:', username);
+      console.log('Available users:', Object.keys(users));
+      
+      const user = users[username];
+      if (!user) {
+        console.log('User not found:', username);
+        return null;
+      }
+      
+      console.log('Checking password for user:', username);
+      if (user.password === password) {
+        console.log('Login successful for:', username);
+        return user;
+      }
+      
+      console.log('Invalid password for:', username);
+      return null;
+    }
+    
+    function addUser(username, password, role, email, credits) {
+      const users = getUsers();
+      users[username] = {
+        username: username,
+        password: password,
+        role: role,
+        email: email || `${username}@mani272.com`,
+        credits: credits || 100
+      };
+      setUsers(users);
+    }
+    
+    function updateUserCredits(username, credits) {
+      const users = getUsers();
+      if (users[username]) {
+        users[username].credits = credits;
+        setUsers(users);
+        if (currentUser && currentUser.username === username) {
+          currentUser.credits = credits;
+          store.save('currentUser', currentUser);
+          updateProfile();
+        }
+      }
+    }
+    
+    function deductCredits(amount) {
+      if (!currentUser) return false;
+      
+      if (currentUser.credits < amount) {
+        setStatus(`Insufficient credits! You need ${amount} credits.`, 'error');
+        return false;
+      }
+      
+      currentUser.credits -= amount;
+      updateUserCredits(currentUser.username, currentUser.credits);
+      return true;
+    }
+    
+    function updateProfile() {
+      if (!currentUser) return;
+      const name = currentUser.username;
+      const email = currentUser.email || `${name}@mani272.com`;
+      const credits = currentUser.credits || 0;
+      
+      el.profileName.textContent = name;
+      el.profileEmail.textContent = email;
+      el.userRolePill.textContent = currentUser.role === 'admin' ? 'Admin' : 'User';
+      el.creditsPill.textContent = `Credits: ${credits}`;
+      
+      // Show admin panel only for admins - STRICTLY enforce this
+      const isAdmin = currentUser.role === 'admin';
+      if (isAdmin) {
+        el.adminPanel.style.display = 'flex';
+        el.adminPanel.classList.remove('hidden');
+        renderUserList();
+      } else {
+        el.adminPanel.style.display = 'none';
+        el.adminPanel.classList.add('hidden');
+      }
+    }
+    
+    function renderUserList() {
+      const users = getUsers();
+      const userEntries = Object.values(users);
+      
+      el.userList.innerHTML = userEntries.map(user => `
+        <div class="user-item" data-username="${user.username}">
+          <div class="user-info">
+            <div class="user-name">
+              ${user.username}
+              <span class="role-badge ${user.role}">${user.role}</span>
+              <span class="credit-badge">${user.credits || 0} credits</span>
+            </div>
+            <div class="user-role">${user.email || user.username + '@mani272.com'}</div>
+          </div>
+          <div class="user-actions">
+            <input type="number" class="credit-input" value="${user.credits || 0}" min="0" id="credits_${user.username}" />
+            <button class="btn-small btn-warning" onclick="updateCreditsForUser('${user.username}')">Set</button>
+            ${user.username !== 'admin' ? `<button class="btn-small btn-danger" onclick="deleteUser('${user.username}')">Delete</button>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    function updateCreditsForUser(username) {
+      const input = document.getElementById(`credits_${username}`);
+      const credits = parseInt(input.value) || 0;
+      updateUserCredits(username, credits);
+      renderUserList();
+      setStatus(`Credits updated for ${username}`, 'success');
+    }
+    
+    function deleteUser(username) {
+      if (username === 'admin') {
+        setStatus('Cannot delete admin user', 'error');
+        return;
+      }
+      if (confirm(`Are you sure you want to delete user: ${username}?`)) {
+        const users = getUsers();
+        delete users[username];
+        setUsers(users);
+        renderUserList();
+        setStatus(`User ${username} deleted successfully`, 'success');
+      }
+    }
+    
+    // Add user event
+    el.addUserBtn.addEventListener('click', () => {
+      const username = el.newUsername.value.trim();
+      const password = el.newPassword.value.trim();
+      const role = el.newRole.value;
+      const credits = parseInt(el.newCredits.value) || 100;
+      
+      if (!username || !password) {
+        setStatus('Username and password are required', 'error');
+        return;
+      }
+      
+      const users = getUsers();
+      if (users[username]) {
+        setStatus('Username already exists', 'error');
+        return;
+      }
+      
+      users[username] = {
+        username,
+        password,
+        role,
+        email: `${username}@mani272.com`,
+        credits
+      };
+      
+      setUsers(users);
+      renderUserList();
+      setStatus(`User ${username} created successfully with ${credits} credits`, 'success');
+      
+      // Clear form
+      el.newUsername.value = '';
+      el.newPassword.value = '';
+      el.newRole.value = 'user';
+      el.newCredits.value = '100';
+    });
+    
+    // Status messages
+    function setStatus(text, kind) {
+      el.status.textContent = text || '';
+      el.status.className = 'status' + (kind ? ' ' + kind : '');
+      anim.flashStatus();
+    }
+    
+    // Search functionality
+    function sanitizeTerm(raw) {
+      return (raw || '').trim();
+    }
+    
+    function renderJSON(data) {
+      el.code.textContent = JSON.stringify(data, null, 2);
+    }
+    
+    function stripOwner(o) {
+      if (!o || typeof o !== 'object') return;
+      if (Object.prototype.hasOwnProperty.call(o, 'owner')) delete o.owner;
+      for (const k in o) {
+        try { stripOwner(o[k]); } catch(_) {}
+      }
+    }
+    
+    function renderHistory() {
+      const hist = store.load('history', []);
+      el.historyList.innerHTML = hist.map(h => `
+        <div class="hist-item" data-term="${h.term}">
+          <div class="hist-term">${h.term}</div>
+          <div class="hist-time">${h.at}</div>
+        </div>
+      `).join('') || '<div class="owner" style="text-align:center;padding:24px;">No history</div>';
+    }
+    
+    function addHistory(term, payload) {
+      const hist = store.load('history', []);
+      hist.unshift({ term, payload, at: new Date().toLocaleString() });
+      store.save('history', hist);
+      renderHistory();
+    }
+    
+    async function search() {
+      const term = sanitizeTerm(el.term.value);
+      if (!term) {
+        setStatus('Enter a number', 'error');
+        return;
+      }
+      
+      // Deduct 1 credit per search
+      if (!deductCredits(1)) {
+        return;
+      }
+      
+      const prev = el.search.textContent;
+      el.search.disabled = true;
+      el.search.textContent = '...';
+      setStatus('Searching… (1 credit used)');
+      el.owner.textContent = '';
+      el.queryEcho.textContent = term;
+      anim.pulseRun();
+      
+      const url = `${API_BASE}?key=${encodeURIComponent(KEY)}&type=${encodeURIComponent('mobile')}&term=${encodeURIComponent(term)}`;
+      
+      try {
+        const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        const data = await res.json();
+        stripOwner(data);
+        
+        if (!data || data.success === false) {
+          const message = (data && (data.message || data.error)) || 'Request failed';
+          setStatus(message, 'error');
+          renderJSON(data);
+          el.resultCount.textContent = '';
+          return;
+        }
+        
+        const nested = data.result && data.result.result ? data.result.result : data.result;
+        const count = Array.isArray(nested) ? nested.length : 0;
+        const wrapped = { success: true, query: term, count, response: data };
+        
+        renderJSON(wrapped);
+        setStatus(`Found ${count}`, 'success');
+        el.resultCount.textContent = count ? `Records: ${count}` : 'No records';
+        addHistory(term, wrapped);
+        el.timestamp.textContent = new Date().toLocaleString();
+      } catch(e) {
+        setStatus('Network error', 'error');
+        renderJSON({ error: String(e) });
+        el.resultCount.textContent = '';
+      } finally {
+        el.search.disabled = false;
+        el.search.textContent = prev;
+      }
+    }
+    
+    // Event listeners
+    el.search.addEventListener('click', search);
+    el.clear.addEventListener('click', () => {
+      el.term.value = '';
+      el.code.textContent = '';
+      el.queryEcho.textContent = '';
+      setStatus('');
+      el.owner.textContent = '';
+    });
+    el.term.addEventListener('keydown', e => {
+      if (e.key === 'Enter') search();
+    });
+    el.clearOutput.addEventListener('click', () => {
+      el.code.textContent = '';
+      el.resultCount.textContent = '';
+      setStatus('Cleared', 'success');
+    });
+    el.copyResponse.addEventListener('click', async () => {
+      const text = el.code.textContent || '';
+      try {
+        await navigator.clipboard.writeText(text);
+        setStatus('Copied', 'success');
+      } catch(e) {
+        setStatus('Copy failed', 'error');
+      }
+    });
+    
+    function showResponse() {
+      el.panelResponse.classList.remove('hidden');
+      el.panelHistory.classList.add('hidden');
+      el.tabResponse.classList.add('active');
+      el.tabHistory.classList.remove('active');
+    }
+    
+    function showHistory() {
+      renderHistory();
+      el.panelResponse.classList.add('hidden');
+      el.panelHistory.classList.remove('hidden');
+      el.tabResponse.classList.remove('active');
+      el.tabHistory.classList.add('active');
+    }
+    
+    el.historyList.addEventListener('click', (e) => {
+      const item = e.target.closest('.hist-item');
+      if (!item) return;
+      const term = item.dataset.term;
+      el.term.value = term;
+      showResponse();
+      search();
+    });
+    
+    el.tabResponse.addEventListener('click', showResponse);
+    el.tabHistory.addEventListener('click', showHistory);
+    
+    el.theme.addEventListener('click', () => {
+      const root = document.documentElement;
+      if (root.classList.contains('light')) {
+        root.classList.remove('light');
+        el.theme.textContent = 'Dark';
+      } else {
+        root.classList.add('light');
+        el.theme.textContent = 'Light';
+      }
+    });
+    
+    el.logoutBtn.addEventListener('click', () => {
+      currentUser = null;
+      store.save('currentUser', null);
+      showLogin();
+      gsap.to(loginModal, { opacity: 0, duration: .2, onComplete: () => {
+        loginModal.style.display = 'flex';
+        gsap.from(loginModal, { opacity: 0, duration: .3 });
+      }});
+    });
+    
+    // Login functionality
+    const loginModal = document.getElementById('loginModal');
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+    const mainApp = document.getElementById('mainApp');
+    const mainLayout = document.getElementById('mainLayout');
+    
+    function checkAuth() {
+      currentUser = store.load('currentUser', null);
+      if (currentUser) {
+        // Verify user still exists
+        const users = getUsers();
+        if (users[currentUser.username]) {
+          showMainApp();
+        } else {
+          currentUser = null;
+          store.save('currentUser', null);
+          showLogin();
+        }
+      } else {
+        showLogin();
+      }
+    }
+    
+    function showLogin() {
+      loginModal.style.display = 'flex';
+      mainApp.style.display = 'none';
+      mainLayout.style.display = 'none';
+    }
+    
+    function showMainApp() {
+      loginModal.style.display = 'none';
+      mainApp.style.display = 'flex';
+      mainLayout.style.display = 'grid';
+      updateProfile();
+    }
+    
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = document.getElementById('loginUsername').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      
+      console.log('Login attempt:', { username, password: password ? '***' : 'empty' });
+      
+      // Ensure users are initialized
+      initializeUsers();
+      
+      const user = authenticateUser(username, password);
+      
+      if (user) {
+        console.log('Login successful, setting currentUser');
+        currentUser = user;
+        store.save('currentUser', user);
+        loginError.classList.remove('show');
+        showMainApp();
+        gsap.from('.panel', { y: 18, opacity: 0, duration: .35, stagger: .05 });
+      } else {
+        console.log('Login failed');
+        loginError.classList.add('show');
+        loginError.textContent = 'Invalid username or password';
+        gsap.from(loginError, { opacity: 0, y: -5, duration: .2 });
+      }
+    });
+    
+    // Initialize and check auth
+    console.log('Initializing application...');
+    const initializedUsers = initializeUsers();
+    console.log('Users after initialization:', Object.keys(initializedUsers));
+    console.log('Default credentials: admin/admin123 or user1/user123');
+    checkAuth();
+    
+    // Reset database button (in admin panel)
+    setTimeout(() => {
+      const resetBtn = document.getElementById('resetDataBtn');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          if (confirm('This will delete all users and reset to defaults. Continue?')) {
+            localStorage.clear();
+            console.log('LocalStorage cleared!');
+            initializeUsers();
+            alert('Database reset! Use admin/admin123 or user1/user123 to login.');
+            location.reload();
+          }
+        });
+      }
+    }, 500);
+    
+    // URL parameters
+    const params = new URLSearchParams(location.search);
+    const urlTerm = params.get('term');
+    const autoRun = params.get('autorun') === '1';
+    const logo = params.get('logo') || store.load('logoUrl', null) || DEFAULT_LOGO;
+    
+    if (logo && el.avatar) {
+      el.avatar.style.backgroundImage = `url(${logo})`;
+      store.save('logoUrl', logo);
+    }
+    
+    showResponse();
+    
+    if (urlTerm) {
+      el.term.value = urlTerm;
+      if (currentUser && autoRun) search();
+    }
+    
+    // DJ Style Colorful Particle Background Animation
+    (function() {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let animationId;
+      let time = 0;
+      
+      const djColors = [
+        { r: 99, g: 102, b: 241 },
+        { r: 139, g: 92, b: 246 },
+        { r: 168, g: 85, b: 247 },
+        { r: 59, g: 130, b: 246 },
+        { r: 16, g: 185, b: 129 },
+        { r: 245, g: 158, b: 11 },
+        { r: 239, g: 68, b: 68 },
+        { r: 96, g: 165, b: 250 }
+      ];
+      
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      
+      function Particle() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.vx = (Math.random() - 0.5) * 1.2;
+        this.vy = (Math.random() - 0.5) * 1.2;
+        this.radius = Math.random() * 2.5 + 1;
+        this.baseRadius = this.radius;
+        this.opacity = Math.random() * 0.8 + 0.3;
+        this.colorIndex = Math.floor(Math.random() * djColors.length);
+        this.colorSpeed = Math.random() * 0.02 + 0.01;
+        this.pulseSpeed = Math.random() * 0.05 + 0.02;
+        this.pulsePhase = Math.random() * Math.PI * 2;
+        this.updateColor();
+      }
+      
+      Particle.prototype.updateColor = function() {
+        time += 0.01;
+        const colorIndex = (Math.floor(time * 10) + this.colorIndex) % djColors.length;
+        const nextColorIndex = (colorIndex + 1) % djColors.length;
+        const t = (time * 10) % 1;
+        
+        const color1 = djColors[colorIndex];
+        const color2 = djColors[nextColorIndex];
+        
+        this.colorR = Math.floor(color1.r + (color2.r - color1.r) * t);
+        this.colorG = Math.floor(color1.g + (color2.g - color1.g) * t);
+        this.colorB = Math.floor(color1.b + (color2.b - color1.b) * t);
+        this.color = `rgba(${this.colorR}, ${this.colorG}, ${this.colorB}, ${this.opacity})`;
+      };
+      
+      function initParticles() {
+        particles = [];
+        const particleCount = Math.floor((canvas.width * canvas.height) / 12000);
+        for (let i = 0; i < particleCount; i++) {
+          particles.push(new Particle());
+        }
+      }
+      
+      function drawParticles() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        time += 0.01;
+        
+        particles.forEach((particle, i) => {
+          particle.x += particle.vx;
+          particle.y += particle.vy;
+          
+          if (particle.x < 0 || particle.x > canvas.width) particle.vx *= -1;
+          if (particle.y < 0 || particle.y > canvas.height) particle.vy *= -1;
+          
+          particle.x = Math.max(0, Math.min(canvas.width, particle.x));
+          particle.y = Math.max(0, Math.min(canvas.height, particle.y));
+          
+          particle.updateColor();
+          
+          const pulse = Math.sin(time * 2 + particle.pulsePhase) * 0.3 + 1;
+          particle.radius = particle.baseRadius * pulse;
+          
+          const gradient = ctx.createRadialGradient(
+            particle.x, particle.y, 0,
+            particle.x, particle.y, particle.radius * 2
+          );
+          gradient.addColorStop(0, particle.color);
+          gradient.addColorStop(0.5, `rgba(${particle.colorR}, ${particle.colorG}, ${particle.colorB}, ${particle.opacity * 0.5})`);
+          gradient.addColorStop(1, `rgba(${particle.colorR}, ${particle.colorG}, ${particle.colorB}, 0)`);
+          
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.radius * 2, 0, Math.PI * 2);
+          ctx.fillStyle = gradient;
+          ctx.fill();
+          
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
+          ctx.fillStyle = particle.color;
+          ctx.fill();
+          
+          particles.slice(i + 1).forEach(p2 => {
+            const dx = particle.x - p2.x;
+            const dy = particle.y - p2.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance < 150) {
+              const opacity = (1 - distance / 150) * 0.4;
+              const midR = Math.floor((particle.colorR + p2.colorR) / 2);
+              const midG = Math.floor((particle.colorG + p2.colorG) / 2);
+              const midB = Math.floor((particle.colorB + p2.colorB) / 2);
+              
+              ctx.beginPath();
+              ctx.strokeStyle = `rgba(${midR}, ${midG}, ${midB}, ${opacity})`;
+              ctx.lineWidth = 1.5;
+              ctx.moveTo(particle.x, particle.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.stroke();
+            }
+          });
+        });
+        
+        animationId = requestAnimationFrame(drawParticles);
+      }
+      
+      resizeCanvas();
+      initParticles();
+      drawParticles();
+      
+      window.addEventListener('resize', () => {
+        resizeCanvas();
+        initParticles();
+      });
+    })();
+  </script>
+  </body>
+</html>
