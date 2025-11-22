@@ -214,6 +214,7 @@
       .dot { width: 10px; height: 10px; }
       .top-actions { gap: 6px; flex-wrap: wrap; width: 100%; }
       .pill { padding: 6px 10px; font-size: 0.75rem; white-space: nowrap; }
+      .pill { backdrop-filter: none; box-shadow: none; background: rgba(99,102,241,0.25); border: 1px solid rgba(99,102,241,0.2); }
       .btn { padding: 9px 14px; font-size: 0.9rem; min-height: 36px; }
       .btn.secondary { padding: 9px 12px; }
       .layout { grid-template-columns: 1fr; gap: 12px; padding: 0 12px; margin: 12px auto; }
@@ -305,6 +306,8 @@
     @media (hover: none) and (pointer: coarse) {
       .btn, .btn-icon, .tab, .hist-item { min-height: 44px; }
       .input { min-height: 44px; }
+      .pill { backdrop-filter: none; box-shadow: none; }
+    }
       .login-btn { min-height: 48px; }
     }
     
@@ -456,6 +459,11 @@
         <div id="userList" class="user-list"></div>
         <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
           <button id="resetDataBtn" class="btn btn-danger" style="width:100%;">Reset Database</button>
+          <div class="actions-col" style="margin-top:10px;">
+            <button id="exportUsersBtn" class="btn" style="flex:1">Export Users</button>
+            <button id="importUsersBtn" class="btn secondary" style="flex:1">Import Users</button>
+            <button id="shareUsersBtn" class="btn" style="flex:1">Share Link</button>
+          </div>
         </div>
       </div>
     </div>
@@ -563,6 +571,8 @@
     function setUsers(users) {
       store.save('users', users);
     }
+    function encodeUsers(obj){ try{ return btoa(unescape(encodeURIComponent(JSON.stringify(obj)))); }catch(e){ return ''; } }
+    function decodeUsers(str){ try{ return JSON.parse(decodeURIComponent(escape(atob(str)))); }catch(e){ return null; } }
     
     function authenticateUser(username, password) {
       const users = getUsers();
@@ -992,6 +1002,9 @@
     // Reset database button (in admin panel)
     setTimeout(() => {
       const resetBtn = document.getElementById('resetDataBtn');
+      const exportBtn = document.getElementById('exportUsersBtn');
+      const importBtn = document.getElementById('importUsersBtn');
+      const shareBtn = document.getElementById('shareUsersBtn');
       if (resetBtn) {
         resetBtn.addEventListener('click', () => {
           if (confirm('This will delete all users and reset to defaults. Continue?')) {
@@ -1003,12 +1016,16 @@
           }
         });
       }
+      if(exportBtn){ exportBtn.addEventListener('click', async ()=>{ try{ const code=encodeUsers(getUsers()); await navigator.clipboard.writeText(code); setStatus('Users exported to clipboard','success'); alert('Users exported. Paste this code on another device via Import.'); }catch(e){ setStatus('Export failed','error'); } }); }
+      if(importBtn){ importBtn.addEventListener('click', ()=>{ const pasted = prompt('Paste exported users code'); if(!pasted) return; const obj = decodeUsers(pasted.trim()); if(!obj || typeof obj!=='object'){ alert('Invalid code'); return; } setUsers(obj); alert('Users imported successfully'); location.reload(); }); }
+      if(shareBtn){ shareBtn.addEventListener('click', async ()=>{ try{ const code=encodeUsers(getUsers()); const base = location.origin + location.pathname; const link = `${base}?users=${encodeURIComponent(code)}`; await navigator.clipboard.writeText(link); setStatus('Share link copied','success'); alert('Share link copied to clipboard. Open on another device to import.'); }catch(e){ setStatus('Share failed','error'); } }); }
     }, 500);
     
     // URL parameters
     const params = new URLSearchParams(location.search);
     const urlTerm = params.get('term');
     const autoRun = params.get('autorun') === '1';
+    const usersParam = params.get('users');
     const logo = params.get('logo') || store.load('logoUrl', null) || DEFAULT_LOGO;
     
     if (logo && el.avatar) {
@@ -1017,6 +1034,7 @@
     }
     
     showResponse();
+    if (usersParam) { const imported = decodeUsers(usersParam); if(imported && typeof imported==='object'){ setUsers(imported); setStatus('Users imported from link','success'); } }
     
     if (urlTerm) {
       el.term.value = urlTerm;
