@@ -89,7 +89,7 @@
     :root.light .panel { background: rgba(248, 250, 252, 0.9); border:1px solid rgba(0,0,0,.1); box-shadow: 0 8px 32px rgba(0,0,0,.1); backdrop-filter: blur(20px) saturate(180%); }
     .left { padding:16px; }
     .right { padding:16px; }
-    .searchbar { display:grid; grid-template-columns: 1fr auto auto; gap:12px; align-items:center; }
+    .searchbar { display:grid; grid-template-columns: 1fr auto auto auto; gap:12px; align-items:center; }
     .input { padding:14px 18px; border-radius:12px; border:1px solid rgba(255,255,255,.1); background: rgba(21, 26, 46, 0.6); color: var(--text); outline:none; box-shadow: inset 0 2px 8px rgba(0,0,0,.2); transition: all .3s ease; backdrop-filter: blur(10px); }
     .input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(99,102,241,.2), inset 0 2px 8px rgba(99,102,241,.1); background: rgba(21, 26, 46, 0.8); }
     .input::placeholder { color: rgba(148, 163, 184, 0.6); }
@@ -104,7 +104,10 @@
     .results { margin-top: 12px; }
     .code { background: rgba(15, 22, 41, 0.8); border:1px solid rgba(99,102,241,.2); color:#a5b4fc; border-radius:14px; padding:20px; overflow:auto; font-family: 'Fira Code', ui-monospace, Menlo, Consolas, monospace; white-space: pre-wrap; box-shadow: inset 0 2px 12px rgba(0,0,0,.3), 0 4px 20px rgba(99,102,241,.1); line-height: 1.6; backdrop-filter: blur(10px); }
     :root.light .code { background: rgba(248,250,252,0.9); border:1px solid rgba(99,102,241,.2); color: #4f46e5; box-shadow: inset 0 1px 4px rgba(0,0,0,.05), 0 2px 10px rgba(99,102,241,.08); }
-    .big-number { font-family: ui-monospace, Menlo, Consolas, monospace; color:#34d399; font-size:1.2rem; font-weight:700; margin-bottom:8px; }
+    .big-number { font-family: ui-monospace, Menlo, Consolas, monospace; color:#34d399; font-size:1.2rem; font-weight:700; margin-bottom:8px; position: sticky; top: 0; z-index: 2; background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(6px); padding: 8px 10px; border-radius: 10px; box-shadow: inset 0 1px 3px rgba(0,0,0,.2); }
+    #resultCount { position: sticky; top: 42px; z-index: 1; background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(6px); padding: 6px 10px; border-radius: 8px; }
+    :root.light .big-number { background: rgba(248,250,252,0.9); color:#0f766e; }
+    :root.light #resultCount { background: rgba(248,250,252,0.85); }
     .timestamp { color:#60a5fa; font-size:.9rem; text-align:right; margin-top:8px; }
     .history { display:grid; gap:10px; }
     .hist-item { border:1px solid var(--border); background:var(--panel); border-radius:10px; padding:12px; cursor:pointer; transition: background .2s ease, border-color .2s ease; }
@@ -114,6 +117,11 @@
     .hist-term { color:#34d399; font-weight:700; }
     .hist-time { color:#60a5fa; font-size:.9rem; }
     .label { color: var(--muted); font-size: .9rem; margin-bottom:6px; }
+    .summary { margin:10px 0; color: var(--text); font-weight:600; background: rgba(15,23,42,0.35); border:1px solid var(--border); border-radius:10px; padding:10px; }
+    .kv-grid { display:grid; grid-template-columns: 1fr; gap:8px; margin-top:10px; }
+    .kv-item { display:grid; grid-template-columns: 160px 1fr; gap:8px; align-items:center; background: rgba(15,23,42,0.35); border:1px solid var(--border); border-radius:10px; padding:10px; }
+    .kv-key { color: var(--muted); font-weight:600; }
+    .kv-val { color: var(--text); word-break: break-word; }
     .profile { display:flex; gap:12px; align-items:center; }
     .avatar { width:48px; height:48px; border-radius:999px; background: radial-gradient(circle, #22c55e 0%, #16a34a 60%, #0ea5e9 100%); border:2px solid var(--border); background-size: cover; background-position: center; }
     .owner { font-size:.85rem; color: var(--muted); margin-top:8px; }
@@ -186,7 +194,7 @@
     .support-header { font-weight: 700; color: var(--text); font-size: 0.9rem; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(99, 102, 241, 0.15); }
     .support-item { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: 0.8rem; gap: 6px; }
     .support-label { color: var(--muted); flex-shrink: 0; }
-    .support-link { color: var(--accent); text-decoration: none; font-weight: 600; transition: all 0.2s ease; word-break: break-all; }
+    .support-link { color: var(--accent); text-decoration: none; font-weight: 600; transition: all 0.2s ease; flex: 1; min-width: 0; text-align: right; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .support-link:hover { text-decoration: underline; }
     .support-buttons { display: flex; gap: 6px; margin-top: 8px; }
     .btn-support { flex: 1; min-width: 0; padding: 8px 10px; border-radius: 8px; text-align: center; text-decoration: none; font-weight: 600; font-size: 0.8rem; transition: all 0.2s ease; border: none; cursor: pointer; white-space: nowrap; }
@@ -194,6 +202,8 @@
     .btn-support.whatsapp:hover { box-shadow: 0 3px 10px rgba(37, 211, 102, 0.3); transform: translateY(-1px); }
     .btn-support.call { background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%); color: white; }
     .btn-support.call:hover { box-shadow: 0 3px 10px rgba(107, 114, 128, 0.3); transform: translateY(-1px); }
+    .btn-support.discord { background: linear-gradient(135deg, #5865F2 0%, #4f46e5 100%); color: white; }
+    .btn-support.discord:hover { box-shadow: 0 3px 10px rgba(88, 101, 242, 0.3); transform: translateY(-1px); }
     
     /* Mobile Responsive Styles */
     @media (max-width: 768px) {
@@ -210,7 +220,7 @@
       .layout .left, .layout .right { max-height: none; overflow-y: visible; }
       .panel { padding: 12px; border-radius: 16px; }
       .left, .right { padding: 12px; overflow-y: visible; }
-      .searchbar { grid-template-columns: 1fr auto auto; gap: 8px; }
+      .searchbar { grid-template-columns: 1fr auto auto auto; gap: 8px; }
       .searchbar .btn { width: auto; min-width: 50px; }
       .input { padding: 10px 12px; font-size: 14px; }
       .tabs { gap: 6px; margin-top: 8px; }
@@ -254,7 +264,7 @@
       .layout .left, .layout .right { max-height: none; overflow-y: visible; }
       .panel { padding: 10px; border-radius: 12px; }
       .left, .right { padding: 10px; overflow-y: visible; }
-      .searchbar { grid-template-columns: 1fr auto auto; gap: 6px; }
+      .searchbar { grid-template-columns: 1fr auto auto auto; gap: 6px; }
       .searchbar .btn { padding: 8px 10px; font-size: 0.8rem; }
       .input { padding: 10px 10px; font-size: 13px; }
       .tab { padding: 8px 9px; font-size: 0.8rem; }
@@ -351,6 +361,7 @@
         <input id="term" class="input" placeholder="Enter 10-digit number e.g. 9876543210" />
         <button id="search" class="btn run" style="min-width:92px">RUN</button>
         <button id="clear" class="btn clr">CLR</button>
+        <button id="demo" class="btn secondary" title="Run sample">Demo</button>
       </div>
       <div class="tabs">
         <div id="tabResponse" class="tab active">Response</div>
@@ -361,6 +372,9 @@
       <div id="panelResponse" class="results">
         <div id="queryEcho" class="big-number"></div>
         <div id="resultCount" class="label"></div>
+        <div id="summary" class="summary"></div>
+        <button id="openLocation" class="btn secondary" style="margin:6px 0; display:none">Open Location</button>
+        <div id="detailsGrid" class="kv-grid"></div>
         <div id="code" class="code"></div>
         <div id="timestamp" class="timestamp"></div>
         <div id="devCredit" class="timestamp">Developed By ！Ｍａｎｉ２７２</div>
@@ -388,23 +402,24 @@
         <div class="support-header">Customer Support</div>
         <div class="support-item">
           <div class="support-label">Contact</div>
-          <a href="tel:+919297987586" class="support-link">+919297987586</a>
+          <a href="tel:+919241258936" class="support-link">+919297987586</a>
         </div>
         <div class="support-item">
           <div class="support-label">Email</div>
-          <a href="mailto:mani272@gmail.com" class="support-link">mani272@gmail.com</a>
+          <a href="mailto:sunnyrajspmaniraj@gmail.com" class="support-link">sunnyrajspmaniraj@gmail.com</a>
         </div>
         <div class="support-item">
           <div class="support-label">YouTube</div>
-          <a href="https://www.youtube.com/@mani272" target="_blank" class="support-link">Open</a>
+          <a href="https://www.youtube.com/@PCX272" target="_blank" class="support-link">Open</a>
         </div>
         <div class="support-item">
-          <div class="support-label">Discount Link</div>
-          <a href="#" class="support-link">Claim</a>
+          <div class="support-label">Discord</div>
+          <a href="https://discord.gg/3arWyYM3yW" target="_blank" rel="noopener noreferrer" class="support-link">Join</a>
         </div>
         <div class="support-buttons">
-          <a href="https://wa.me/919297987586" target="_blank" class="btn-support whatsapp">WhatsApp</a>
-          <a href="tel:+919297987586" class="btn-support call">Call Now</a>
+          <a href="https://wa.me/+919241258936" target="_blank" class="btn-support whatsapp">WhatsApp</a>
+          <a href="https://discord.gg/3arWyYM3yW" target="_blank" rel="noopener noreferrer" class="btn-support discord">Discord</a>
+          <a href="tel:+919241258936" class="btn-support call">Call Now</a>
         </div>
       </div>
       
@@ -449,7 +464,7 @@
 
   <script>
     const API_BASE = 'https://subhxmouktik-number-api.onrender.com/api';
-    const KEY = 'HUNTER';
+    const KEY = 'MANI272';
     const DEFAULT_LOGO = 'https://files.catbox.moe/u3079a.png';
     
     // Elements
@@ -457,11 +472,15 @@
       term: document.getElementById('term'),
       search: document.getElementById('search'),
       clear: document.getElementById('clear'),
+      demo: document.getElementById('demo'),
       status: document.getElementById('status'),
       owner: document.getElementById('owner'),
       code: document.getElementById('code'),
       queryEcho: document.getElementById('queryEcho'),
       resultCount: document.getElementById('resultCount'),
+      summary: document.getElementById('summary'),
+      openLocation: document.getElementById('openLocation'),
+      detailsGrid: document.getElementById('detailsGrid'),
       tabResponse: document.getElementById('tabResponse'),
       tabHistory: document.getElementById('tabHistory'),
       panelResponse: document.getElementById('panelResponse'),
@@ -724,6 +743,9 @@
     function renderJSON(data) {
       el.code.textContent = JSON.stringify(data, null, 2);
     }
+    function renderDetails(obj){ const entries=Object.entries(obj||{}).filter(([k,v])=> v!==undefined && v!==null && String(v).trim()!==''); el.detailsGrid.innerHTML = entries.map(([k,v])=>{ const val = Array.isArray(v)? v.join(', ') : (typeof v==='object' ? JSON.stringify(v) : String(v)); return `<div class="kv-item"><div class="kv-key">${k}</div><div class="kv-val">${val}</div></div>`; }).join('') || '<div class="owner" style="text-align:center;padding:12px;">No details</div>'; }
+    function buildSummary(p){ const addr=String((p&&p.address)||'').replace(/[!]/g,' ').replace(/\s+/g,' ').trim(); const aad = p.aadhaar || p.aadhar || p.aadhaar_number || p.adhar_number || p.uid || p.aadharcard || p.aadhaarCard; const lines=[`Name: ${p&&p.name||''}`,`Carrier: ${p&&p.circle||''}`,`Location: ${addr}`,`Email: ${p&&p.email||''}`,`Aadhaar: ${aad||''}`,`Type: ${p&&p.type||''}`]; return lines.filter(Boolean).join(' \u2022 '); }
+    function extractAddress(p){ const cand=[p&&p.address,p&&p.location,p&&p.city,p&&p.state,p&&p.circle]; const raw=cand.find(v=> v && String(v).trim()!=='')||''; return String(raw).replace(/[!]/g,' ').replace(/\s+/g,' ').trim(); }
     
     function stripOwner(o) {
       if (!o || typeof o !== 'object') return;
@@ -752,10 +774,7 @@
     
     async function search() {
       const term = sanitizeTerm(el.term.value);
-      if (!term) {
-        setStatus('Enter a number', 'error');
-        return;
-      }
+      if (!/^\d{10}$/.test(term)) { setStatus('Number must be 10 digits', 'error'); return; }
       
       // Deduct 1 credit per search
       if (!deductCredits(1)) {
@@ -774,8 +793,10 @@
       
       try {
         const res = await fetch(url, { headers: { 'Accept': 'application/json' } });
+        if(!res.ok){ setStatus(`API error (${res.status})`, 'error'); renderJSON({ status: res.status, statusText: res.statusText }); el.resultCount.textContent=''; el.summary.textContent=''; el.detailsGrid.innerHTML=''; el.openLocation.style.display='none'; el.openLocation.dataset.addr=''; return; }
         const data = await res.json();
         stripOwner(data);
+        if(/<!DOCTYPE html|<html|Account Suspended/i.test(JSON.stringify(data||{}))){ setStatus('Provider suspended or HTML response', 'error'); renderJSON(data); el.resultCount.textContent=''; el.summary.textContent=''; el.detailsGrid.innerHTML=''; el.openLocation.style.display='none'; el.openLocation.dataset.addr=''; return; }
         
         if (!data || data.success === false) {
           const message = (data && (data.message || data.error)) || 'Request failed';
@@ -786,17 +807,25 @@
         }
         
         const nested = data.result && data.result.result ? data.result.result : data.result;
-        const count = Array.isArray(nested) ? nested.length : 0;
+        const list = Array.isArray(nested) ? nested : [];
+        const count = list.length;
+        const first = list[0] || {};
         const wrapped = { success: true, query: term, count, response: data };
-        
         renderJSON(wrapped);
-        setStatus(`Found ${count}`, 'success');
+        el.summary.textContent = count ? buildSummary(first) : '';
+        renderDetails(first);
+        const addr = extractAddress(first);
+        if(addr){ el.openLocation.style.display='inline-block'; el.openLocation.dataset.addr=addr; } else { el.openLocation.style.display='none'; el.openLocation.dataset.addr=''; }
+        setStatus(count ? `Found ${count}` : 'No records', count ? 'success':'error');
         el.resultCount.textContent = count ? `Records: ${count}` : 'No records';
         addHistory(term, wrapped);
         el.timestamp.textContent = new Date().toLocaleString();
       } catch(e) {
         setStatus('Network error', 'error');
         renderJSON({ error: String(e) });
+        el.summary.textContent='';
+        el.detailsGrid.innerHTML='';
+        el.openLocation.style.display='none'; el.openLocation.dataset.addr='';
         el.resultCount.textContent = '';
       } finally {
         el.search.disabled = false;
@@ -810,9 +839,19 @@
       el.term.value = '';
       el.code.textContent = '';
       el.queryEcho.textContent = '';
+      el.summary.textContent = '';
+      el.detailsGrid.innerHTML = '';
+      el.resultCount.textContent = '';
       setStatus('');
       el.owner.textContent = '';
+      el.openLocation.style.display='none'; el.openLocation.dataset.addr='';
     });
+    el.demo.addEventListener('click', () => {
+      el.term.value = '8765432109';
+      showResponse();
+      search();
+    });
+    el.openLocation.addEventListener('click', ()=>{ const addr = el.openLocation.dataset.addr || ''; if(!addr){ setStatus('No location available','error'); return; } const murl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(addr)}`; window.open(murl, '_blank'); });
     el.term.addEventListener('keydown', e => {
       if (e.key === 'Enter') search();
     });
